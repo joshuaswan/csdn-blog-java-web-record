@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:content="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!--自动扫描该包，使用SpringMVC认为包下用了@controller注解的类是控制器-->
+    <content:component-scan base-package="main.java.controller"/>
+
+    <!--配置注解驱动-->
+    <mvc:annotation-driven/>
+
+    <!-- 对模型视图名称的解析，即在模型视图名称调价前后缀（如果最后一个还表示文件夹，则最后的斜杠不要漏了）使用JSP-->
+    <!--默认的视图解析器 在上边的解析错误是使用（默认使用html）-->
+    <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--可以使用jstl标签-->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--静态资源映射-->
+    <!--
+    表示当浏览器有静态资源请求的时候，并且请求url路径中带有：/js/,则这个资源跑到webapp目录下的/WEB-INF/statics/js/去找
+    比如我们在JSP中引入一个js文件：src="${webRoot}/js/jQuery-core/jquery-1.6.1.min.js
+    两个*表示当前文件夹及其子文件夹都可访问
+    -->
+    <mvc:resources mapping="/css/**" location="/WEB-INF/static/css/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/static/js/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/static/images/"/>
+
+</beans>
